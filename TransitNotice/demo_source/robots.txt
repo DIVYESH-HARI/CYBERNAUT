@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /demo-source/
+Disallow: /admin/

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"><channel><title>Test Private Bus</title><link>https://bus.test/</link><description>x</description>
+<item><guid>R-1</guid><title>Boarding point change</title><link>/notices/r-1</link><pubDate>Sun, 01 Nov 2026 10:00:00 +0530</pubDate>
+ <category>Chennai - Madurai</category><category>Chennai - Tirunelveli</category>
+ <description>&lt;p&gt;Night coaches board at Kilambakkam from 01 Nov 2026 18:00 until further notice.&lt;/p&gt;</description></item>
+<item><guid>R-2</guid><title>Trip not running</title><link>https://bus.test/r-2</link><pubDate>Mon, 02 Nov 2026 09:00:00 +0530</pubDate>
+ <category>Chennai - Coimbatore</category><description>The 22:30 departure is not running on 05 Nov 2026.</description></item>
+<item><guid>R-3</guid><title>Delays expected</title><link>https://bus.test/r-3</link><pubDate>Mon, 02 Nov 2026 09:00:00 +0530</pubDate>
+ <category>Chennai - Trichy</category><description>Departures may be late from 02 Nov 2026 08:00 to 03 Nov 2026 06:00.</description></item>
+<item><guid>R-4</guid><title>Cancelled: festival specials</title><link>https://bus.test/r-4</link><pubDate>Mon, 02 Nov 2026 09:00:00 +0530</pubDate>
+ <description>Extra services are cancelled.</description></item>
+<item><guid>R-1</guid><title>Duplicate</title><description>dup</description></item>
+<item><title></title><description></description></item>
+<item><guid>R-5</guid><title>Bad window</title><description>Works from 05 Nov 2026 to 01 Nov 2026.</description></item>
+</channel></rss>

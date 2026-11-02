@@ -1,0 +1,20 @@
+[
+  {
+    "source_id": "demo-portal-a",
+    "name": "Demo National Scholarship Portal (table layout)",
+    "listing_url": "{BASE_URL}/demo-source/portal-a",
+    "adapter": "table",
+    "default_timezone": "Asia/Kolkata",
+    "demo": true,
+    "config": {}
+  },
+  {
+    "source_id": "demo-portal-b",
+    "name": "Demo International Fellowship Board (card layout)",
+    "listing_url": "{BASE_URL}/demo-source/portal-b",
+    "adapter": "cards",
+    "default_timezone": "UTC",
+    "demo": true,
+    "config": {}
+  }
+]

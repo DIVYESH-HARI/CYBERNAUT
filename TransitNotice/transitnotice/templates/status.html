@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Source status{% endblock %}
+{% block body %}
+<h1>Source status &amp; provenance</h1>
+<table><thead><tr><th>Source</th><th>State</th><th>Last attempt</th><th>Last success</th><th>Failures in a row</th><th>Next run</th><th>Last error</th></tr></thead><tbody>
+{% for s, state, text in sources %}<tr><td>{{ s.agency }}<br><small>{{ s.operator_type }} operator &middot; {{ s.base_url }}</small></td>
+ <td><span class="pill {{ state }}">{{ state|upper }}</span><br><small>{{ text }}</small></td>
+ <td>{{ s.last_attempt_at|local(s.timezone) }}</td><td>{{ s.last_success_at|local(s.timezone) }}</td>
+ <td>{{ s.consecutive_failures }}</td><td>{{ s.next_run_at|local(s.timezone) }}</td><td>{{ s.last_error or '-' }}</td></tr>{% endfor %}
+</tbody></table>
+<h2>Recent fetch runs</h2>
+<table><thead><tr><th>#</th><th>Source</th><th>Started (UTC)</th><th>Outcome</th><th>HTTP</th><th>Parsed</th><th>Skipped</th><th>New</th><th>Revised</th><th>Withdrawn</th><th>Notes</th></tr></thead><tbody>
+{% for r in runs %}<tr><td>{{ r.run_id }}</td><td>{{ r.source_key }}</td><td>{{ r.started_at }}</td><td>{{ r.outcome }}</td><td>{{ r.http_status or '-' }}</td>
+<td>{{ r.items_parsed }}</td><td>{{ r.items_skipped }}</td><td>{{ r.items_new }}</td><td>{{ r.items_revised }}</td><td>{{ r.items_withdrawn }}</td><td>{{ r.error or '' }}</td></tr>{% endfor %}
+</tbody></table>
+{% endblock %}

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Test Atom</title><id>urn:x</id><updated>2026-11-02T00:00:00Z</updated>
+<entry><id>urn:a-1</id><title>Road closed for works</title><link href="https://atom.test/a-1"/><updated>2026-11-02T04:00:00Z</updated>
+ <category term="Route 5"/><summary>Diversion via Main Road between 03 Nov 2026 and 04 Nov 2026.</summary></entry>
+</feed>

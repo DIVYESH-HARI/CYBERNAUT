@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}TransitNotice{% endblock %} - TransitNotice</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <a class="brand" href="{{ url_for('dashboard') }}">TransitNotice</a>
+  <nav aria-label="Main">
+    <a href="{{ url_for('dashboard') }}">Current notices</a>
+    <a href="{{ url_for('dashboard', status='archive') }}">Ended notices</a>
+    <a href="{{ url_for('subscribe') }}">Get alerts</a>
+    <a href="{{ url_for('status_page') }}">Data sources</a>
+  </nav>
+</header>
+<main id="main">{% block body %}{% endblock %}</main>
+<footer>Unofficial student project. Data is collected on a schedule from public sources and may be out of date -
+always check the linked official source before travelling. Times shown are in each agency's local time zone.</footer>
+</body>
+</html>

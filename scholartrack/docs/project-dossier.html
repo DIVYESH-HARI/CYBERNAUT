@@ -1,0 +1,512 @@
+<title>ScholarTrack Project Dossier</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: sticky contents rail on the left, one reading column on the right; stacks to one column on phones. */
+:root {
+  --paper: #f5f6f8; --sheet: #ffffff; --ink: #172033; --muted: #556074; --rule: #dde2ea;
+  --accent: #b4441c; --accent-soft: #fbe9e1; --navy: #1f3a68; --navy-soft: #e6ecf6;
+  --ok: #17663f; --ok-soft: #dff2e7; --warn: #8a5a00; --warn-soft: #fbf0d4;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #10141c; --sheet: #171d28; --ink: #e7ebf2; --muted: #a3adbf; --rule: #2a3344;
+    --accent: #f08a5d; --accent-soft: #3a2018; --navy: #9cb8ea; --navy-soft: #1d2a42;
+    --ok: #8fdcb0; --ok-soft: #14301f; --warn: #f2c96b; --warn-soft: #362a0d; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #10141c; --sheet: #171d28; --ink: #e7ebf2; --muted: #a3adbf; --rule: #2a3344;
+  --accent: #f08a5d; --accent-soft: #3a2018; --navy: #9cb8ea; --navy-soft: #1d2a42;
+  --ok: #8fdcb0; --ok-soft: #14301f; --warn: #f2c96b; --warn-soft: #362a0d; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--paper); color: var(--ink); font: 17px/1.6 var(--body); margin: 0; }
+.page { max-width: 1180px; margin: 0 auto; padding-block: 28px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 40px; }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 20px); align-self: start; font-size: .9rem;
+  max-height: calc(100vh - 40px); overflow-y: auto; }
+nav.toc p { font: 700 .72rem/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+nav.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; counter-reset: s; }
+nav.toc li { counter-increment: s; }
+nav.toc a { display: block; padding: 4px 8px; border-radius: 6px; color: var(--ink); text-decoration: none; }
+nav.toc a::before { content: counter(s, decimal-leading-zero) "  "; font-family: var(--mono); font-size: .75rem; color: var(--muted); }
+nav.toc a:hover, nav.toc a:focus-visible { background: var(--navy-soft); }
+main { min-width: 0; }
+header.cover { background: var(--sheet); border: 1px solid var(--rule); border-radius: 14px; padding: 28px clamp(18px, 4vw, 40px); margin-bottom: 28px; }
+.eyebrow { font: 700 .75rem/1 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
+h1 { font: 800 clamp(2rem, 5vw, 3.2rem)/1.05 var(--display); margin: 0 0 10px; letter-spacing: -.02em; text-wrap: balance; }
+.lede { font-size: 1.15rem; color: var(--muted); max-width: 62ch; margin: 0 0 22px; }
+.ticket { display: grid; grid-template-columns: auto 1fr; gap: 0; border: 2px dashed var(--accent); border-radius: 12px; overflow: hidden; max-width: 560px; }
+.ticket .stub { background: var(--accent); color: var(--sheet); padding: 14px 18px; display: grid; place-content: center; text-align: center; }
+.ticket .stub b { font: 800 2.2rem/1 var(--display); display: block; }
+.ticket .stub span { font: 700 .7rem/1.2 var(--body); letter-spacing: .08em; text-transform: uppercase; }
+.ticket .body { padding: 12px 16px; background: var(--accent-soft); font-size: .95rem; }
+.ticket .body code { font-family: var(--mono); font-size: .85rem; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-top: 22px; }
+.stat { border-top: 3px solid var(--navy); padding-top: 8px; }
+.stat b { font: 800 1.7rem/1.1 var(--display); display: block; font-variant-numeric: tabular-nums; }
+.stat span { font-size: .85rem; color: var(--muted); }
+section { background: var(--sheet); border: 1px solid var(--rule); border-radius: 14px; padding: 26px clamp(18px, 4vw, 40px); margin-bottom: 22px; scroll-margin-top: 16px; }
+h2 { font: 800 1.6rem/1.2 var(--display); margin: 0 0 6px; letter-spacing: -.01em; text-wrap: balance; }
+h2 small { display: block; font: 700 .72rem/1 var(--mono); color: var(--accent); letter-spacing: .06em; margin-bottom: 8px; }
+h3 { font: 700 1.1rem/1.3 var(--body); margin: 22px 0 6px; color: var(--navy); }
+p, li { max-width: 72ch; }
+.say { border-left: 4px solid var(--accent); background: var(--accent-soft); padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 14px 0; }
+.say b { display: block; font: 700 .72rem/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.note { background: var(--warn-soft); color: var(--ink); padding: 10px 14px; border-radius: 8px; margin: 14px 0; }
+.tablewrap { overflow-x: auto; margin: 12px 0; border: 1px solid var(--rule); border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: .93rem; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--rule); }
+th { background: var(--navy-soft); color: var(--navy); font-weight: 700; white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+code, .mono { font-family: var(--mono); font-size: .86em; background: var(--navy-soft); padding: 1px 5px; border-radius: 4px; }
+pre.code { font-family: var(--mono); font-size: .82rem; line-height: 1.5; background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 14px; overflow-x: auto; margin: 12px 0; }
+pre.mermaid { background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 14px; overflow-x: auto; text-align: center; }
+.pill { display: inline-block; font: 700 .75rem/1.6 var(--body); padding: 0 9px; border-radius: 999px; background: var(--navy-soft); color: var(--navy); white-space: nowrap; }
+.pill.ok { background: var(--ok-soft); color: var(--ok); } .pill.warn { background: var(--warn-soft); color: var(--warn); }
+.pill.hot { background: var(--accent-soft); color: var(--accent); }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 16px; }
+.grid2 > div { min-width: 0; }
+.card { border: 1px solid var(--rule); border-radius: 10px; padding: 14px 16px; }
+.card h3 { margin-top: 0; }
+ol.steps { padding-left: 22px; } ol.steps li { margin-bottom: 8px; }
+details.qa { border-bottom: 1px solid var(--rule); padding: 10px 0; }
+details.qa summary { cursor: pointer; font-weight: 700; }
+details.qa p { margin: 8px 0 0; color: var(--ink); }
+a { color: var(--navy); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+footer { color: var(--muted); font-size: .85rem; padding: 6px 4px; }
+@media (max-width: 860px) {
+  .page { grid-template-columns: 1fr; gap: 18px; }
+  nav.toc { position: static; max-height: none; }
+  nav.toc ol { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+html { scroll-behavior: smooth; }
+</style>
+
+<div class="page">
+<nav class="toc" aria-label="Contents">
+  <p>Contents</p>
+  <ol>
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#problem">Problem &amp; users</a></li>
+    <li><a href="#stack">Tech stack</a></li>
+    <li><a href="#sources">Data sources &amp; rights</a></li>
+    <li><a href="#architecture">Architecture</a></li>
+    <li><a href="#collection">Collection</a></li>
+    <li><a href="#normalisation">Normalisation</a></li>
+    <li><a href="#database">Database</a></li>
+    <li><a href="#changes">Changes &amp; alerts</a></li>
+    <li><a href="#freshness">Freshness &amp; failures</a></li>
+    <li><a href="#dashboard">Dashboard</a></li>
+    <li><a href="#api">API</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#demo">Live demo script</a></li>
+    <li><a href="#ethics">Ethics &amp; limits</a></li>
+    <li><a href="#setup">Setup &amp; deployment</a></li>
+    <li><a href="#structure">Code structure</a></li>
+    <li><a href="#marks">Marks mapping</a></li>
+    <li><a href="#viva">Viva preparation</a></li>
+    <li><a href="#future">Future work</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="cover" id="overview">
+  <p class="eyebrow">Cybernaut internship · Mini Project 1 · WEB-02 · Web scraping</p>
+  <h1>ScholarTrack</h1>
+  <p class="lede">A scholarship and fellowship deadline tracker. It reads approved official websites on a schedule, turns each announcement into clean data, notices when a deadline changes, and shows students a searchable dashboard that always links back to the official page.</p>
+  <div class="ticket" aria-label="Example of a real deadline tracked by ScholarTrack">
+    <div class="stub"><b>31</b><span>schemes</span></div>
+    <div class="body">National Scholarship Portal, student applications close <b>31 Oct 2026, 23:59 IST</b>. Read from the official page as <code>Student Application Open till : 31-10-2026</code>.</div>
+  </div>
+  <div class="stats">
+    <div class="stat"><b>262</b><span>real notices collected</span></div>
+    <div class="stat"><b>4</b><span>official sources</span></div>
+    <div class="stat"><b>4</b><span>page layouts handled</span></div>
+    <div class="stat"><b>78</b><span>automated test cases</span></div>
+    <div class="stat"><b>~3,800</b><span>lines of code incl. tests</span></div>
+  </div>
+  <div class="say"><b>Say it in one breath</b>"Scholarship information is scattered and goes out of date. ScholarTrack collects it from official sources only, never guesses a deadline, tells you when a date changes, and always sends you to the official page to apply."</div>
+</header>
+
+<section id="problem">
+  <h2><small>01 · WHY</small>Problem and users</h2>
+  <p>Scholarship notices are spread across government portals, university sites and funding bodies. Each uses its own layout and date format. Dates get revised and notices get withdrawn, while copies on blogs and aggregators go stale. Students miss deadlines or act on wrong information.</p>
+  <h3>Project objectives (from the brief) and how they are met</h3>
+  <div class="tablewrap"><table>
+    <tr><th>Objective</th><th>What ScholarTrack does</th></tr>
+    <tr><td>Collect time-sensitive announcements</td><td>Scheduled collection from 4 official sources (NSP, USIEF, CSC UK, EU Erasmus Mundus)</td></tr>
+    <tr><td>Normalise eligibility, benefits, deadlines</td><td>Deadlines become UTC instants with their timezone; study level, funding type and subject are normalised; eligibility keywords are highlighted</td></tr>
+    <tr><td>Warn when dates change; separate confirmed from unknown</td><td>Version-aware change history and one alert per meaningful change; unknown deadlines stay unknown and are labelled</td></tr>
+    <tr><td>Searchable, source-linked dashboard</td><td>Search, topic picker, filters, timeline, alerts; every card links to the official page</td></tr>
+  </table></div>
+  <h3>Personas</h3>
+  <div class="grid2">
+    <div class="card"><h3>Aisha, final-year undergraduate</h3><p>Wants master's funding, has little time, finds government portals confusing. She picks "Postgraduate" and "Fully funded", checks the timeline weekly, and opens the official page before applying.</p></div>
+    <div class="card"><h3>Mr. Rao, scholarship office advisor</h3><p>Advises hundreds of students and can't re-read every site. He relies on alerts to learn when a deadline moves or a notice is withdrawn, and forwards the official link.</p></div>
+  </div>
+  <h3>Usefulness and limits of scheduled monitoring</h3>
+  <p><b>Useful:</b> one place, sorted by urgency, with change alerts and honest freshness labels. <b>Limited:</b> it is not real-time (each source is checked every 6 hours or daily), it only covers approved sources, and it can't decide eligibility.</p>
+</section>
+
+<section id="stack">
+  <h2><small>02 · HOW IT IS BUILT</small>Tech stack and why</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Layer</th><th>Choice</th><th>Why this one</th></tr>
+    <tr><td>Language</td><td>Python 3.11+</td><td>Best ecosystem for scraping; easy to read in a viva</td></tr>
+    <tr><td>Web framework / API</td><td>FastAPI + Uvicorn</td><td>Small, fast, automatic request validation, built-in test client</td></tr>
+    <tr><td>HTTP client</td><td>httpx</td><td>Timeouts, redirects, and a mock transport for offline tests</td></tr>
+    <tr><td>HTML parsing</td><td>BeautifulSoup + lxml</td><td>Tolerates malformed HTML; CSS selectors</td></tr>
+    <tr><td>Database</td><td>SQLite with SQL migration files</td><td>Real constraints, foreign keys and transactions with zero setup; one file to back up</td></tr>
+    <tr><td>Timezones</td><td><code>zoneinfo</code> + tzdata</td><td>Correct IANA zones and daylight-saving rules on Windows too</td></tr>
+    <tr><td>Scheduler</td><td>Background thread in the app</td><td>No external service needed; per-source intervals</td></tr>
+    <tr><td>Frontend</td><td>Plain HTML, CSS, JavaScript</td><td>No build step; works offline; accessible markup</td></tr>
+    <tr><td>Tests</td><td>pytest</td><td>Fixtures for each real layout; never touches the internet</td></tr>
+  </table></div>
+</section>
+
+<section id="sources">
+  <h2><small>03 · DATA RIGHTS</small>Data sources and source approval</h2>
+  <p>Every source was checked on 21 Oct 2026 for robots.txt, copyright and terms, and page structure. Full evidence is in <code>docs/SOURCE_APPROVAL.md</code>.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Source</th><th class="num">Notices</th><th>Layout / adapter</th><th>robots.txt</th><th>Terms / copyright</th><th>Refresh</th></tr>
+    <tr><td>National Scholarship Portal (Govt of India)</td><td class="num">31</td><td><code>blocks</code></td><td>None published (404)</td><td><span class="pill warn">Permission needed to reproduce</span> facts + link only</td><td>6 h</td></tr>
+    <tr><td>USIEF Fulbright-Nehru (Indian citizens)</td><td class="num">8</td><td><code>detail_pages</code></td><td>Allows <code>/</code></td><td>No prohibition found; facts + link only</td><td>6 h</td></tr>
+    <tr><td>Commonwealth Scholarship Commission UK</td><td class="num">5</td><td><code>detail_pages</code></td><td>Allows all</td><td><span class="pill warn">All rights reserved</span> facts + link only</td><td>6 h</td></tr>
+    <tr><td>EU Erasmus Mundus Catalogue (EACEA)</td><td class="num">218</td><td><code>cards</code> + pagination</td><td>Catalogue allowed</td><td><span class="pill ok">CC BY 4.0</span> reuse with attribution</td><td>24 h</td></tr>
+  </table></div>
+  <div class="note"><b>Status:</b> mentor sign-off is still pending. NSP's copyright policy says content "may not be reproduced … without due permission", so the app stores only facts (scheme name, ministry, level, dates) plus a link, and copies no paragraphs. Get mentor approval, and ideally email NSP, before any public deployment.</div>
+  <h3>Sources considered and rejected</h3>
+  <p>DAAD (results load via a hidden JavaScript API), Buddy4Study and other aggregators (not official; terms restrict scraping), Chevening (a single global deadline; possible future addition).</p>
+  <h3>Demo sources</h3>
+  <p>Two fictional built-in portals (table layout and card layout) are switched on only with <code>start-demo.bat</code>. They exist so the mentor challenges can be shown safely: edit a deadline, withdraw a notice, take a site offline, change a layout.</p>
+</section>
+
+<section id="architecture">
+  <h2><small>04 · SYSTEM DESIGN</small>Architecture</h2>
+  <pre class="mermaid">
+flowchart LR
+  S[sources.json<br/>approved sources] --> F[Fetcher<br/>robots.txt · 2 s gap · 20 s timeout · 3 tries]
+  F --> A[Adapter<br/>table · cards · blocks · detail_pages]
+  A --> N[Normaliser<br/>deadline+timezone · level · type · subject]
+  N --> U[Idempotent upsert<br/>content hash · version]
+  U --> C[(changes)]
+  C --> AL[(alerts)] --> D[delivery_log]
+  U --> DB[(SQLite)]
+  DB --> API[FastAPI JSON API]
+  API --> UI[Student dashboard]
+  API --> OP[Operator dashboard]
+  SCH[Scheduler<br/>per-source interval<br/>fast retry on failure] --> F
+  SNAP[seed/snapshot.json<br/>offline start] -.-> DB
+  </pre>
+  <div class="say"><b>Explain the flow</b>"Each source is fetched politely, parsed by the adapter that matches its layout, normalised into one format, and saved. If the saved content changed, we record a new version and, if the deadline or status changed, one alert."</div>
+</section>
+
+<section id="collection">
+  <h2><small>05 · SCRAPING</small>Collection: fetcher and adapters</h2>
+  <h3>Polite fetcher (<code>app/fetcher.py</code>)</h3>
+  <ul>
+    <li><b>robots.txt first:</b> 404 means no rules; 401/403 means disallow everything; 5xx means skip and flag. Crawl-delay is honoured.</li>
+    <li><b>Rate limit:</b> at least 2 seconds between requests to the same host.</li>
+    <li><b>Timeout and retries:</b> 20 s timeout, at most 3 attempts with exponential backoff (1 s, 2 s). Retries only on 429/5xx/timeouts, never on 403/404.</li>
+    <li><b>Safety:</b> refuses redirects to other hosts, non-HTML content and responses over 2 MB. The User-Agent identifies the project.</li>
+    <li><b>Clear errors:</b> each failure has a kind (<code>network</code>, <code>timeout</code>, <code>http_error</code>, <code>robots_disallowed</code>, <code>parse_empty</code> …) that is shown in the operator dashboard.</li>
+  </ul>
+  <h3>Four adapters, one per page layout (<code>app/adapters.py</code>)</h3>
+  <div class="tablewrap"><table>
+    <tr><th>Adapter</th><th>Page shape</th><th>Used by</th><th>How it reads it</th></tr>
+    <tr><td><code>table</code></td><td>HTML table, one row per notice</td><td>Demo portal A</td><td>Maps columns by header text, not position, so reordered columns still work</td></tr>
+    <tr><td><code>cards</code></td><td>Repeated cards with a heading link</td><td>Erasmus Mundus, demo B</td><td>Follows "Next" pagination (up to 20 pages); unlinked items point to the catalogue page</td></tr>
+    <tr><td><code>blocks</code></td><td>Blocks with "Label : value" badges, grouped by ministry</td><td>NSP</td><td>Takes the "Student Application Open till" badge, not the institute-verification dates; flags renewal-only schemes; uses the guidelines PDF as the official link</td></tr>
+    <tr><td><code>detail_pages</code></td><td>Index page linking to one page per scholarship</td><td>CSC UK, USIEF</td><td>Fetches each page; reads the deadline with configured rules (a sentence pattern, or the table row labelled "Application deadline")</td></tr>
+  </table></div>
+  <p>Selectors and labels live in <code>sources.json</code>, so a site redesign often needs only a config change. Malformed rows, missing fields and duplicates are skipped with a warning instead of crashing the run.</p>
+</section>
+
+<section id="normalisation">
+  <h2><small>06 · CLEAN DATA</small>Normalisation rules</h2>
+  <p><b>Core rule:</b> a deadline that can't be read is stored as unknown (<code>NULL</code>). ScholarTrack never invents a date.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Text on the official page</th><th>Stored as (UTC)</th><th>Shown as</th><th>Flags</th></tr>
+    <tr><td><code>31-10-2026</code> (NSP)</td><td><code>2026-10-31T18:29:00Z</code></td><td>31 Oct 2026, 23:59 Asia/Kolkata</td><td><span class="pill warn">time + zone assumed</span></td></tr>
+    <tr><td><code>16:00 GMT on Tuesday 8 December 2026</code> (CSC)</td><td><code>2026-12-08T16:00:00Z</code></td><td>8 Dec 2026, 16:00 UTC</td><td>none</td></tr>
+    <tr><td><code>16:00 BST on Tuesday 20 October</code> (no year)</td><td><code>2026-10-20T15:00:00Z</code></td><td>20 Oct 2026, 16:00 Europe/London</td><td><span class="pill warn">year from weekday</span></td></tr>
+    <tr><td><code>July 1, 2026</code> (USIEF table)</td><td><code>2026-07-01T18:29:00Z</code></td><td>1 Jul 2026, 23:59 Asia/Kolkata</td><td><span class="pill warn">time + zone assumed</span></td></tr>
+    <tr><td><code>2027-03-31T23:59:00+05:30</code></td><td><code>2027-03-31T18:29:00Z</code></td><td>31 Mar 2027, 23:59 UTC+05:30</td><td>none</td></tr>
+    <tr><td><code>To be announced</code>, <code>Rolling</code>, <code>sometime next spring</code>, <code>31 March</code></td><td><code>NULL</code></td><td>Deadline not published (raw text kept)</td><td>unknown</td></tr>
+  </table></div>
+  <ul>
+    <li><b>Year inference</b> only happens when a weekday is given and exactly one year near today matches it. Otherwise the deadline stays unknown.</li>
+    <li><b>Study level:</b> School, Diploma, Undergraduate, Postgraduate, Doctoral, Postdoctoral, Professional. Indian terms are handled: post-matric covers class 11 to PG; pre-matric means school.</li>
+    <li><b>Funding type:</b> Need-based, Merit, Research, Travel, Fully funded, Fellowship, Other.</li>
+    <li><b>Subject:</b> 11 subject groups inferred from the title (e.g. "Sustainable Catalysis" → Physics, chemistry &amp; maths).</li>
+    <li><b>Eligibility keywords</b> (citizenship, income limit, disability, gender …) are only highlighted. The app never makes an eligibility decision.</li>
+  </ul>
+</section>
+
+<section id="database">
+  <h2><small>07 · PERSISTENCE</small>Database design</h2>
+  <pre class="mermaid">
+erDiagram
+  sources ||--o{ notices : publishes
+  sources ||--o{ scrape_runs : "checked by"
+  notices ||--o{ changes : "has versions"
+  changes ||--o| alerts : "raises once"
+  alerts ||--o{ delivery_log : "delivered via"
+  </pre>
+  <div class="tablewrap"><table>
+    <tr><th>Table</th><th>Key columns</th><th>Constraints that matter</th></tr>
+    <tr><td><code>sources</code></td><td>source_id, adapter, refresh_minutes, last_status, consecutive_failures</td><td>CHECK on adapter and status values</td></tr>
+    <tr><td><code>notices</code></td><td>notice_id, source_id, url, provider, education_level, discipline, region, benefit_text, eligibility_excerpt, <b>due_at</b>, timezone, captured_at, verified_at, content_hash, notice_status, version</td><td><code>UNIQUE(source_id, external_key)</code>, FK to sources, CHECK on status</td></tr>
+    <tr><td><code>changes</code></td><td>change_id, notice_id, version, change_type, previous_deadline, updated_deadline</td><td><code>UNIQUE(notice_id, version)</code></td></tr>
+    <tr><td><code>alerts</code></td><td>alert_id, change_id, message, delivery_status</td><td><code>UNIQUE(change_id)</code>, so one alert per change</td></tr>
+    <tr><td><code>delivery_log</code>, <code>scrape_runs</code></td><td>Every delivery attempt and every refresh run</td><td>Audit trail for the operator</td></tr>
+  </table></div>
+  <ul>
+    <li><b>Primary key:</b> <code>notice_id</code> = SHA-1 of source + the page's own key (or URL). The same notice always gets the same id, so a correction becomes an update, never a new notice.</li>
+    <li><b>Idempotent upsert:</b> each refresh runs in one <code>BEGIN IMMEDIATE</code> transaction. Running it twice on the same page changes nothing (tested).</li>
+    <li><b>Migrations:</b> <code>001_init.sql</code> and <code>002_real_sources.sql</code> (rebuilds <code>sources</code> using the standard SQLite procedure, keeps all data). Applied automatically at start-up.</li>
+    <li><b>Secrets:</b> the operator token comes from an environment variable or a git-ignored file, never from source code.</li>
+  </ul>
+</section>
+
+<section id="changes">
+  <h2><small>08 · REAL-TIME UPDATES</small>Change detection and alerts</h2>
+  <ol class="steps">
+    <li>A content hash is computed from the fields a student cares about (title, provider, level, subject, benefit, eligibility, deadline instant, status). Re-formatting the same date doesn't change the hash.</li>
+    <li><b>Same hash:</b> only <code>verified_at</code> is updated.</li>
+    <li><b>Different hash:</b> the notice is updated, <code>version</code> goes up, and a <code>changes</code> row records old and new deadlines. The type is one of deadline_revised, deadline_set, deadline_removed, withdrawn, reinstated, details_updated.</li>
+    <li>Every type except details_updated raises <b>exactly one alert</b>. Alerts are delivered to a log (safe demo mode) or an optional webhook, and every attempt is written to <code>delivery_log</code>.</li>
+    <li>A notice missing from a complete, successful read becomes <span class="pill warn">unlisted</span>. It is not deleted and not called "withdrawn". If the read was incomplete, nothing is marked.</li>
+  </ol>
+  <div class="say"><b>A real example from today</b>At 09:12 UTC the Commonwealth Master's and PhD pages said "The closing date for applications is 16:00 BST on Tuesday 20 October". By 11:50 UTC that sentence had gone, because applications had closed. ScholarTrack recorded two <code>deadline_removed</code> changes and raised one alert each: "Deadline removed for 'Commonwealth Master's Scholarships' (was 20 Oct 2026, 16:00 Europe/London); treat it as unknown". I confirmed against the live page that the sentence really was removed.</div>
+</section>
+
+<section id="freshness">
+  <h2><small>09 · RELIABILITY</small>Freshness and failure handling</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Situation</th><th>What the app does</th><th>What the student sees</th></tr>
+    <tr><td>All good</td><td>Each source re-checked on its interval</td><td><span class="pill ok">✔ Verified against the source 5 min ago</span></td></tr>
+    <tr><td>Data older than 3 × interval</td><td>Nothing is relabelled as live</td><td><span class="pill warn">Stale snapshot – last verified 2 d ago</span></td></tr>
+    <tr><td>Site unreachable (no internet, 5xx, timeout)</td><td>Run logged as failed; retried after 2, 4, 8 … min</td><td>Red strip with reason + <b>Try again now</b> button; cards say "Source unreachable"</td></tr>
+    <tr><td>Layout changed (nothing parsed)</td><td><code>parse_empty</code> failure; old notices kept</td><td>Operator sees "needs review"</td></tr>
+    <tr><td>One page of many failed</td><td>Run is a warning; nothing marked as removed</td><td>Other notices still update</td></tr>
+    <tr><td>First start with no internet</td><td>Loads <code>seed/snapshot.json</code> (262 real notices from 21 Oct 2026) with their true verification time</td><td>A full page with honest age labels, never empty</td></tr>
+  </table></div>
+</section>
+
+<section id="dashboard">
+  <h2><small>10 · UI &amp; USABILITY</small>The dashboard</h2>
+  <div class="grid2">
+    <div class="card"><h3>1. Find notices</h3><p>A big search box: tap it (or <b>Topics</b>) to pick ready-made topics such as "Engineering &amp; technical (57)" or "For girls &amp; women (2)". Each topic is checked to have results. Study level and funding type dropdowns list only values that exist, with open counts. Quick picks and More filters (programme, dates, sort) round it out.</p></div>
+    <div class="card"><h3>No dead ends</h3><p>If nothing matches every filter, the closest matches are shown with a plain note, e.g. "To find them we removed the deadline date filter." In a test of all 189 level × type × quick-pick combinations, none was empty.</p></div>
+    <div class="card"><h3>Notice cards</h3><p>A days-left badge (red under 7 days, amber under 30), the deadline in the source's timezone and in yours, "assumed" flags, a verification pill, the official link, and a change history.</p></div>
+    <div class="card"><h3>2. Timeline · 3. Alerts · Help</h3><p>Deadlines grouped by urgency with text countdowns (never colour alone). Alerts with source citation and verification state. Help covers personas, data sources and limitations.</p></div>
+    <div class="card"><h3>Operator tab</h3><p>Token-protected. Shows source health, consecutive failures, run history (HTTP status, tries, found/new/changed), the alert delivery log, Refresh now, and the demo walkthrough controls.</p></div>
+    <div class="card"><h3>Accessibility</h3><p>Keyboard tabs, labelled controls, ARIA live regions, visible focus, light and dark themes, phone layout. Two browser windows stay in sync within 15 seconds.</p></div>
+  </div>
+</section>
+
+<section id="api">
+  <h2><small>11 · INTERFACES</small>API endpoints</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Method · path</th><th>Access</th><th>Purpose</th></tr>
+    <tr><td><code>GET /api/notices</code></td><td>Public</td><td>Search and filters (q, level, discipline, category, due_from/to + tz, within_days, sort) with closest-match fallback</td></tr>
+    <tr><td><code>GET /api/notices/{id}</code></td><td>Public</td><td>One notice with its change history</td></tr>
+    <tr><td><code>GET /api/filters</code></td><td>Public</td><td>Filter values with open/total counts</td></tr>
+    <tr><td><code>GET /api/suggestions</code></td><td>Public</td><td>Topic and provider choices that have results</td></tr>
+    <tr><td><code>GET /api/alerts</code></td><td>Public</td><td>Alert queue with source and verification state</td></tr>
+    <tr><td><code>GET /api/status</code></td><td>Public</td><td>Freshness state, data version (for live reload), retry time</td></tr>
+    <tr><td><code>GET /api/sources</code></td><td>Public</td><td>Where the data comes from, with last check</td></tr>
+    <tr><td><code>POST /api/retry</code></td><td>Public, max once a minute</td><td>Re-check unreachable sources</td></tr>
+    <tr><td><code>GET /api/operator/overview</code></td><td>Token</td><td>Sources, runs, delivery log</td></tr>
+    <tr><td><code>POST /api/operator/refresh</code></td><td>Token</td><td>Refresh all sources or one</td></tr>
+    <tr><td><code>POST /api/operator/demo</code></td><td>Token, demo mode</td><td>Mentor-challenge controls</td></tr>
+  </table></div>
+</section>
+
+<section id="testing">
+  <h2><small>12 · QUALITY</small>Testing</h2>
+  <p>Run with <code>python -m pytest -q</code>. There are <b>78 test cases</b> (67 test functions, one parametrised). They run in about 3 seconds and never use the internet.</p>
+  <div class="tablewrap"><table>
+    <tr><th>File</th><th class="num">Functions</th><th>Covers</th></tr>
+    <tr><td><code>test_normalize.py</code></td><td class="num">12</td><td>Unknown deadlines (12 cases), IST/EST/IANA/UTC-offset parsing, levels, keywords, hashing</td></tr>
+    <tr><td><code>test_adapters.py</code></td><td class="num">4</td><td>Table/card parsing, malformed rows, missing fields, duplicates, layout change</td></tr>
+    <tr><td><code>test_fetcher.py</code></td><td class="num">7</td><td>robots.txt rules, retry + backoff, retry ceiling, no retry on 404, timeouts, rate limit</td></tr>
+    <tr><td><code>test_pipeline.py</code></td><td class="num">17</td><td>Idempotency, corrections, one alert per revision, unreachable source, unlisting, constraints, fast retry, snapshot</td></tr>
+    <tr><td><code>test_real_layouts.py</code></td><td class="num">12</td><td>NSP blocks, detail pages, pagination, incomplete runs, weekday-year rule, migration 001→002</td></tr>
+    <tr><td><code>test_api.py</code></td><td class="num">15</td><td>Access control, filters, timezone-aware dates, revision flow, outage flagging, closest matches, suggestions</td></tr>
+  </table></div>
+  <h3>Mandatory acceptance tests</h3>
+  <div class="tablewrap"><table>
+    <tr><th>Acceptance test</th><th>Proved by</th><th>Result</th></tr>
+    <tr><td>Unknown deadline never converted to an arbitrary date</td><td><code>test_unknown_deadline_is_never_converted_to_a_date</code>, <code>test_year_inferred_only_from_a_matching_weekday</code></td><td><span class="pill ok">pass</span></td></tr>
+    <tr><td>A source correction appears as an update, not a new notice</td><td><code>test_source_correction_is_an_update_not_a_new_notice</code></td><td><span class="pill ok">pass</span></td></tr>
+    <tr><td>Date filters work on timezone-aware deadlines</td><td><code>test_date_filter_is_timezone_aware</code> (Asia/Kolkata vs Pacific/Kiritimati)</td><td><span class="pill ok">pass</span></td></tr>
+    <tr><td>Inaccessible source is flagged, not silently skipped</td><td><code>test_unreachable_source_is_flagged_and_data_kept</code>, <code>test_inaccessible_source_is_flagged_not_skipped</code></td><td><span class="pill ok">pass</span></td></tr>
+    <tr><td>Each notice links to the original official announcement</td><td><code>test_each_notice_links_to_official_announcement</code></td><td><span class="pill ok">pass</span></td></tr>
+    <tr><td>Alert triggers once per meaningful revision</td><td><code>test_alert_fires_once_per_meaningful_revision</code></td><td><span class="pill ok">pass</span></td></tr>
+  </table></div>
+</section>
+
+<section id="demo">
+  <h2><small>13 · PRESENTATION DAY</small>Live demo script (about 10 minutes)</h2>
+  <p>Before the session, start with <code>start-demo.bat</code> so the demo controls are available, and keep the operator token from the terminal handy.</p>
+  <ol class="steps">
+    <li><b>Open the dashboard.</b> Point at the green header ("4 official sources checked") and "262 notices from 4 official sources".</li>
+    <li><b>Topic picker.</b> Tap the search box, pick "For girls &amp; women" → AICTE Pragati schemes. Show the days-left badge and the official guidelines PDF link.</li>
+    <li><b>No dead ends.</b> Tap "Closing this week" + "PhD" → the closest-matches note explains what was relaxed.</li>
+    <li><b>Timeline tab.</b> Deadlines grouped by urgency, with text countdowns.</li>
+    <li><b>Real change.</b> Alerts tab → the two Commonwealth "deadline removed" alerts from 21 Oct.</li>
+    <li><b>Challenge 1, another timezone:</b> Operator → Live demo walkthrough → set a demo deadline to <code>20 Dec 2030, 10:00 Asia/Tokyo</code> → Refresh all now → the card shows Tokyo time and your local time.</li>
+    <li><b>Challenge 2, revised notice:</b> the same action creates one alert and a change-history entry. Refresh again to show no duplicate alert.</li>
+    <li><b>Challenge 3, unseen failure:</b> "Take portal B offline" or "Change portal A layout" → Refresh → the source shows needs review, old data is labelled, nothing is deleted.</li>
+    <li><b>Two browser sessions (CP-5):</b> open a second window; after a change both show "Notices were updated" within 15 s.</li>
+    <li><b>Tests:</b> run <code>python -m pytest -q</code> → 78 passed.</li>
+  </ol>
+  <div class="note">No internet in the room? The app still opens with the 262-notice snapshot and labels its age, and the demo sources run locally. Every challenge above still works.</div>
+</section>
+
+<section id="ethics">
+  <h2><small>14 · RESPONSIBILITY</small>Ethics, compliance and limitations</h2>
+  <div class="grid2">
+    <div class="card"><h3>What we do</h3><ul>
+      <li>Only public pages; robots.txt respected; polite rate limits.</li>
+      <li>No login, no CAPTCHA bypass, no personal data stored.</li>
+      <li>Data minimisation: facts + links; no copied paragraphs from restricted sites.</li>
+      <li>Every notice credits and links to its source.</li>
+      <li>Honest freshness: stale data is never called live.</li>
+      <li>No automated eligibility decisions.</li>
+    </ul></div>
+    <div class="card"><h3>Known limitations</h3><ul>
+      <li>Not real-time: checked every 6 h (Erasmus daily).</li>
+      <li>Erasmus programmes publish deadlines on their own sites, so these show "not published".</li>
+      <li>Many USIEF and CSC deadlines have already closed for this cycle.</li>
+      <li>A few NSP schemes don't state a study level.</li>
+      <li>Subject is inferred from titles; timezone abbreviations like IST/CST are ambiguous.</li>
+      <li>Mentor and NSP permission still to be obtained.</li>
+    </ul></div>
+  </div>
+</section>
+
+<section id="setup">
+  <h2><small>15 · RUN IT</small>Setup and deployment</h2>
+  <pre class="code">cd scholartrack
+pip install -r requirements.txt
+python run.py            # or double-click start.bat
+# start-demo.bat         -> also enables the fictional demo sources + mentor controls
+python -m pytest -q      # 78 tests</pre>
+  <ul>
+    <li><code>run.py</code> uses port 8000. If ScholarTrack is already running it just opens it; if another program has the port, it uses the next free one.</li>
+    <li><b>Configuration</b> is by environment variables: <code>SCHOLARTRACK_OPERATOR_TOKEN</code>, <code>_DEMO</code>, <code>_SNAPSHOT</code>, <code>_USER_AGENT</code>, <code>_TIMEOUT</code>, <code>_RETRIES</code>, <code>_MIN_INTERVAL</code>, <code>_WEBHOOK_URL</code>, <code>_DB</code>.</li>
+    <li><b>Deployment:</b> any Python host, <code>uvicorn app.main:app --host 0.0.0.0</code> behind HTTPS, a single worker (the scheduler runs in-process). Back up <code>data/scholartrack.db</code>.</li>
+    <li><b>Monitoring:</b> the Operator tab plus <code>/api/status</code> (fresh / stale / degraded / never).</li>
+  </ul>
+</section>
+
+<section id="structure">
+  <h2><small>16 · MAP OF THE CODE</small>Project structure</h2>
+  <pre class="code">scholartrack/
+├── app/
+│   ├── main.py         API, scheduler, search + closest-match logic   (494 lines)
+│   ├── adapters.py     4 layout adapters + pagination                  (315)
+│   ├── normalize.py    deadlines, timezones, level/type/subject         (305)
+│   ├── pipeline.py     refresh, upsert, change detection, snapshot      (301)
+│   ├── demo_site.py    fictional demo portals for mentor challenges    (201)
+│   ├── fetcher.py      robots.txt, rate limit, timeout, retries         (127)
+│   ├── db.py · alerts.py · config.py
+├── migrations/         001_init.sql, 002_real_sources.sql
+├── static/             index.html, app.js, style.css (dashboard)
+├── tests/              6 test files + HTML fixtures for every layout
+├── seed/snapshot.json  262 real notices for offline start
+├── docs/               SOURCE_APPROVAL.md, REPORT_OUTLINE.md, this dossier
+├── sources.json        approved sources and their parsing rules
+└── run.py · start.bat · start-demo.bat · requirements.txt · README.md</pre>
+</section>
+
+<section id="marks">
+  <h2><small>17 · EVALUATION</small>Marks mapping</h2>
+  <div class="tablewrap"><table>
+    <tr><th>Criterion</th><th class="num">Marks</th><th>Evidence to show</th></tr>
+    <tr><td>Problem selection &amp; approval</td><td class="num">10</td><td>Problem, personas, objectives (this document §1)</td></tr>
+    <tr><td>Source rights &amp; data quality</td><td class="num">15</td><td>SOURCE_APPROVAL.md, robots/terms table, data minimisation, never-guess deadlines</td></tr>
+    <tr><td>Extraction &amp; robust parsing</td><td class="num">15</td><td>4 adapters, malformed-HTML fixtures, layout-change detection</td></tr>
+    <tr><td>Persistence &amp; repeatability</td><td class="num">15</td><td>Constraints, migrations, idempotent upsert test</td></tr>
+    <tr><td>Real-time updates &amp; alerts</td><td class="num">15</td><td>Scheduler, change history, the real Commonwealth alerts, one-alert test</td></tr>
+    <tr><td>Application UI &amp; usability</td><td class="num">10</td><td>Topic picker, no dead ends, timeline, accessibility</td></tr>
+    <tr><td>Testing &amp; live challenge</td><td class="num">10</td><td>78 tests, demo script §13</td></tr>
+    <tr><td>Report, code &amp; viva</td><td class="num">10</td><td>README, REPORT_OUTLINE.md, viva answers below</td></tr>
+    <tr><td><b>Total</b></td><td class="num"><b>100</b></td><td></td></tr>
+  </table></div>
+  <h3>Mentor checkpoints</h3>
+  <div class="tablewrap"><table>
+    <tr><th>Checkpoint</th><th>Show</th></tr>
+    <tr><td>CP-1 Problem, data rights, requirements</td><td>§1, §3, SOURCE_APPROVAL.md</td></tr>
+    <tr><td>CP-2 Sample extraction, field dictionary, error strategy</td><td>tests/fixtures, adapter table §5, fetcher error kinds</td></tr>
+    <tr><td>CP-3 Database design, keys, repeat runs</td><td>§7, <code>test_rerun_is_idempotent</code></td></tr>
+    <tr><td>CP-4 Scheduling, change history, alerts</td><td>§8, Alerts tab, Operator runs table</td></tr>
+    <tr><td>CP-5 Two browser sessions + source update</td><td>Demo step 9</td></tr>
+    <tr><td>CP-6 Unseen failure + viva</td><td>Demo step 8, §18</td></tr>
+  </table></div>
+</section>
+
+<section id="viva">
+  <h2><small>18 · BE READY</small>Viva preparation</h2>
+  <p>The brief says you must explain and change a parser or SQL query <b>without generated code</b>. Practise these two pieces until you can explain them in your own words.</p>
+  <h3>Piece 1: how a deadline is parsed (<code>normalize.parse_deadline</code>)</h3>
+  <ol class="steps">
+    <li>If the text is empty or says TBA / Rolling / Not announced → unknown.</li>
+    <li>Find a date: ISO <code>2026-10-31</code>, then <code>31 Oct 2026</code>, <code>Oct 31, 2026</code>, then <code>31-10-2026</code>. Only if none matches, try "weekday + day month" with the year rule.</li>
+    <li>Remove the date from the text and look for a time (<code>16:00</code>, <code>11:59 PM</code>); none → 23:59, flagged.</li>
+    <li>Look for a timezone after the time: an ISO offset, an IANA name, <code>UTC+01:00</code>, or an abbreviation like IST. None → the source's default zone, flagged.</li>
+    <li>Build the local datetime and convert it to UTC for storage.</li>
+  </ol>
+  <p><i>Practice change:</i> add <code>"HKT": "Asia/Hong_Kong"</code> to <code>TZ_ABBR</code> and write a test for it.</p>
+  <h3>Piece 2: the upsert (<code>pipeline.upsert_notice</code>)</h3>
+  <pre class="code">SELECT * FROM notices WHERE notice_id = ?          -- seen before?
+-- no  -> INSERT (captured_at = first_seen_at = verified_at = now)
+-- yes, same content_hash -> UPDATE notices SET verified_at = ? ...
+-- yes, new hash -> UPDATE ... version = version + 1
+--                  INSERT INTO changes (notice_id, version, change_type, ...)
+--                  INSERT INTO alerts (change_id, ...)   -- UNIQUE(change_id)</pre>
+  <p><i>Practice query:</i> "list notices closing in the next 7 days, soonest first":</p>
+  <pre class="code">SELECT title, due_at FROM notices
+WHERE notice_status = 'active'
+  AND due_at &gt; strftime('%Y-%m-%dT%H:%M:%SZ','now')
+  AND due_at &lt;= strftime('%Y-%m-%dT%H:%M:%SZ','now','+7 days')
+ORDER BY due_at;</pre>
+  <h3>Likely questions</h3>
+  <details class="qa"><summary>Why store deadlines in UTC?</summary><p>So every comparison and filter is between instants. 31 Oct 23:59 IST and 31 Oct 18:29 UTC are the same moment. The original zone is stored too, for display.</p></details>
+  <details class="qa"><summary>How do you avoid duplicate notices and duplicate alerts?</summary><p>The notice id is a hash of source + page key, so the same notice always maps to one row. <code>UNIQUE(notice_id, version)</code> on changes and <code>UNIQUE(change_id)</code> on alerts make a second identical run unable to create another alert.</p></details>
+  <details class="qa"><summary>What happens if a website changes its design?</summary><p>The adapter finds nothing. The run fails as <code>parse_empty</code>, the source shows "needs review", and existing notices stay visible but labelled. Usually only the selectors in sources.json need updating.</p></details>
+  <details class="qa"><summary>Isn't scraping illegal?</summary><p>We only read public pages, follow robots.txt and rate limits, store facts rather than copied text, credit and link every source, and documented each site's terms. Where a site asks for permission to reproduce (NSP), that is flagged for the mentor and the site.</p></details>
+  <details class="qa"><summary>Why are many deadlines 10 days away?</summary><p>All 31 NSP central schemes share one closing date, 31 Oct 2026. The list is sorted by soonest deadline, so they appear first.</p></details>
+  <details class="qa"><summary>Why do Erasmus programmes have no deadline?</summary><p>The EU catalogue doesn't publish one; each programme sets its own. We show "not published" instead of guessing.</p></details>
+  <details class="qa"><summary>How is "real-time" achieved?</summary><p>Scheduled monitoring per source (6 h / 24 h), fast retries after failures, and live browser updates: the page polls a data-version number and reloads when it changes.</p></details>
+  <details class="qa"><summary>What would you add next?</summary><p>See Future work: email alerts, per-student watchlists, more sources, reading Erasmus deadlines from programme sites.</p></details>
+</section>
+
+<section id="future">
+  <h2><small>19 · NEXT STEPS</small>Future work</h2>
+  <ul>
+    <li>Get written permission from NSP and the mentor's approval for all sources.</li>
+    <li>Email or WhatsApp-style alerts with per-student watchlists ("tell me about Postgraduate + Need-based").</li>
+    <li>More official sources with their own deadlines: Chevening, Gates Cambridge, state scholarship portals.</li>
+    <li>Read each Erasmus Mundus programme's own deadline page.</li>
+    <li>Calendar export (.ics) of chosen deadlines.</li>
+    <li>Hosting with HTTPS and a proper production database if usage grows.</li>
+  </ul>
+</section>
+
+<footer>ScholarTrack · Cybernaut internship Mini Project 1 (WEB-02) · figures as of 21 Oct 2026</footer>
+</main>
+</div>

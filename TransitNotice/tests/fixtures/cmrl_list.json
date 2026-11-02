@@ -1,0 +1,5 @@
+[
+ {"id":501,"slug":"sample-junction","link":"https://chennaimetrorail.org/road-diversion/sample-junction/","title":{"rendered":"Sample Junction"},"date_gmt":"2025-06-18T09:33:54","modified_gmt":"2026-09-22T10:20:20","rd-category":[265]},
+ {"id":502,"slug":"test-salai","link":"https://chennaimetrorail.org/road-diversion/test-salai/","title":{"rendered":"Test Salai &#038; Main Road"},"date_gmt":"2024-05-13T01:06:23","modified_gmt":"2024-07-15T11:10:10","rd-category":[267]},
+ {"id":503,"slug":"broken-page","link":"https://chennaimetrorail.org/road-diversion/broken-page/","title":{"rendered":"Broken Page"},"date_gmt":"2024-05-13T01:06:23","modified_gmt":"2024-07-15T11:10:10","rd-category":[266]}
+]

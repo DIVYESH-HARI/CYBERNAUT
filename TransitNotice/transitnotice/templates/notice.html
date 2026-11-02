@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Notice {{ n.external_id }}{% endblock %}
+{% block body %}
+<p><a href="{{ url_for('dashboard') }}">&larr; All advisories</a></p>
+<h1>{{ n.summary }}</h1>
+<p><span class="badge {{ eff }}">{{ eff|statuslabel }}</span> <span class="badge type">{{ n.type|typelabel }}</span>
+ {% if fresh[0] != 'live' %}<span class="badge stale">{{ fresh[1] }}</span>{% endif %}</p>
+<dl class="facts">
+  <dt>Notice ID</dt><dd>{{ n.notice_id }}</dd>
+  <dt>Agency</dt><dd>{{ n.agency }}</dd>
+  <dt>Routes</dt><dd>{{ n.route_id.replace(',', ', ') or '-' }}</dd>
+  <dt>Stations</dt><dd>{{ stations|join(', ') or '-' }}</dd>
+  <dt>Area</dt><dd>{{ n.area or '-' }}</dd>
+  <dt>Published</dt><dd>{{ n.published_at|local(n.tz) }}</dd>
+  <dt>Valid from</dt><dd>{{ n.valid_from|local(n.tz) }}</dd>
+  <dt>Valid to</dt><dd>{{ n.valid_to|local(n.tz) if n.valid_to else 'No end date announced' }}</dd>
+  <dt>First observed</dt><dd>{{ n.observed_at|local(n.tz) }}</dd>
+  <dt>Last confirmed by source</dt><dd>{{ n.last_confirmed_at|local(n.tz) }} ({{ n.last_confirmed_at|ago }})</dd>
+  <dt>Source page</dt><dd><a href="{{ n.source_url }}" rel="noopener" target="_blank">{{ n.source_url }}</a></dd>
+  <dt>Content hash</dt><dd><code>{{ n.content_hash[:16] }}</code></dd>
+</dl>
+<h2>Revision history</h2>
+<table class="hist"><thead><tr><th>Rev</th><th>Observed</th><th>Status</th><th>Window</th><th>What changed</th></tr></thead><tbody>
+{% for r in revs %}<tr><td>{{ r.revision_id }}</td><td>{{ r.observed_at|local(n.tz) }}</td><td>{{ r.status }}</td>
+ <td>{{ r.valid_from|local(n.tz) }} &rarr; {{ r.valid_to|local(n.tz) if r.valid_to else 'open' }}</td><td>{{ r.change_summary }}</td></tr>{% endfor %}
+</tbody></table>
+{% endblock %}

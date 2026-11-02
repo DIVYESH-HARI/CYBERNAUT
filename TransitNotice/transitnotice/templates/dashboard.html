@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}Advisories{% endblock %}
+{% block body %}
+{% macro select(name, label, all_label, items, grouped=False, selected=None, allow_all=True) %}
+  {% set cur = selected if selected is not none else f.get(name, '') %}
+  <label>{{ label }}
+    <select name="{{ name }}">
+      {% if allow_all %}<option value="">{{ all_label }}</option>{% endif %}
+      {% if grouped %}
+        {% for grp, opts in items|groupby('group') %}<optgroup label="{{ grp }}">
+          {% for o in opts %}<option value="{{ o.value }}" {{ 'selected' if cur == o.value }}>{{ o.label }} ({{ o.count }})</option>{% endfor %}
+        </optgroup>{% endfor %}
+      {% else %}
+        {% for o in items %}<option value="{{ o.value }}" {{ 'selected' if cur == o.value }}>{{ o.label }} ({{ o.count }})</option>{% endfor %}
+      {% endif %}
+    </select></label>
+{% endmacro %}
+
+<section class="intro">
+  <h1>Tamil Nadu transport notices</h1>
+  <p class="lead">Road diversions, closures and service changes from transport operators. Choose from the lists below.
+     The number next to each choice shows how many notices you will see.</p>
+  <p class="srcline">Data checked:
+    {% for s, state, text in sources %}
+      <span class="pill {{ state }}" title="{{ text }}">{{ s|sourcelabel }} - {{ {'live':'up to date','stale':'out of date','error':'source not reachable','never':'not checked yet'}[state] }}</span>
+    {% endfor %}
+    <a href="{{ url_for('status_page') }}">details</a></p>
+</section>
+
+<form class="filters" method="get" role="search" aria-label="Filter notices" id="filters">
+  <fieldset><legend>Who &amp; where</legend>
+    {{ select('operator', 'Operator type', 'Government and private', opts.operator) }}
+    {{ select('agency', 'Agency', 'All agencies', opts.agency) }}
+    {{ select('route', 'Route / corridor', 'All routes', opts.route, grouped=True) }}
+    {{ select('station', 'Station / location', 'All locations', opts.station, grouped=True) }}
+    {{ select('area', 'Area', 'All areas', opts.area) }}
+  </fieldset>
+  <fieldset><legend>What &amp; when</legend>
+    {{ select('type', 'Kind of notice', 'All kinds', opts.type) }}
+    {{ select('status', 'Show', '', opts.status, selected=status, allow_all=False) }}
+    {{ select('date', 'Travel day (next 7 days)', 'Any day', opts.date) }}
+    {{ select('year', 'Year', 'All years', opts.year) }}
+    {{ select('ends', 'End date', 'With or without', opts.ends) }}
+    <label>Sort
+      <select name="sort">{% for v, l in sort_labels %}<option value="{{ v }}" {{ 'selected' if sort == v }}>{{ l }}</option>{% endfor %}</select></label>
+  </fieldset>
+  <noscript><button type="submit">Show notices</button></noscript>
+  <details class="textsearch" {{ 'open' if f.get('q') }}><summary>Search by words (optional)</summary>
+    <input type="search" name="q" value="{{ f.get('q','') }}" aria-label="Search words"> <button type="submit">Search</button></details>
+</form>
+<script>
+  document.querySelectorAll('#filters select').forEach(function (s) {
+    s.addEventListener('change', function () {
+      // drop empty fields so the address stays short and readable
+      s.form.querySelectorAll('select, input').forEach(function (el) { if (!el.value) el.disabled = true; });
+      s.form.submit();
+    });
+  });
+</script>
+
+<div class="results-head" aria-live="polite">
+  <p class="count"><strong>{{ total }}</strong> notice{{ '' if total == 1 else 's' }}{% if total > rows|length %}
+     <span class="sub">(showing {{ rows|length }})</span>{% endif %}</p>
+  {% if chips %}<ul class="chips" aria-label="Filters in use">
+    {% for key, name, label in chips %}<li><a href="{{ url_without(key) }}" title="Remove this filter">{{ name }}: {{ label }} <span aria-hidden="true">&times;</span><span class="sr">remove</span></a></li>{% endfor %}
+    <li><a class="clear" href="{{ url_for('dashboard') }}">Clear all</a></li></ul>{% endif %}
+</div>
+
+<ul class="cards">
+{% for r in rows %}
+  {% set st, ftxt = fresh.get(r.source_id, ('never','')) %}
+  {% set head, body = r.summary|headline %}
+  <li class="card {{ r.eff_status }}">
+    <div class="meta">
+      <span class="badge {{ r.eff_status }}">{{ r.eff_status|statuslabel }}</span>
+      <span class="badge type">{{ r.type|typelabel }}</span>
+      <span class="badge op">{{ r.operator_type }}</span>
+      {% if r.revision_id > 1 %}<span class="badge rev">Updated {{ r.revision_id - 1 }}&times;</span>{% endif %}
+      {% if st != 'live' %}<span class="badge stale">{{ 'Not re-checked recently' if st=='stale' else 'Source not reachable' if st=='error' else 'Not verified' }}</span>{% endif %}
+    </div>
+    <h2><a href="{{ url_for('notice', nid=r.notice_id) }}">{{ head }}</a></h2>
+    {% if body %}<p class="body">{{ body[:260] }}{{ '...' if body|length > 260 }}</p>{% endif %}
+    <dl class="mini">
+      <div><dt>Route</dt><dd>{{ r.route_id.replace(',', ', ') or '-' }}</dd></div>
+      <div><dt>Area</dt><dd>{{ r.area or '-' }}</dd></div>
+      <div><dt>When</dt><dd>{{ r.valid_from|local(r.tz) if r.valid_from else 'Already in effect' }} &rarr;
+        {{ r.valid_to|local(r.tz) if r.valid_to else 'no end date announced' }}</dd></div>
+    </dl>
+    <p class="prov">{{ r.agency }} &middot; checked {{ r.last_confirmed_at|ago }}
+       &middot; <a href="{{ url_for('notice', nid=r.notice_id) }}">details &amp; history</a>
+       &middot; <a href="{{ r.source_url }}" rel="noopener" target="_blank">official notice &#8599;</a></p>
+  </li>
+{% else %}
+  <li class="empty"><strong>No notices match all of these choices.</strong>
+    {% if chips %}Remove a filter above, or <a href="{{ url_for('dashboard') }}">start again</a>.{% else %}No data has been collected yet - check <a href="{{ url_for('status_page') }}">source status</a>.{% endif %}</li>
+{% endfor %}
+</ul>
+{% if more_url %}<p class="more"><a class="button" href="{{ more_url }}">Show 30 more ({{ total - rows|length }} left)</a></p>{% endif %}
+
+{% if by_type %}
+<details class="charts-wrap"><summary>Summary charts</summary>
+<section class="charts" aria-label="Summary charts">
+  {% macro bars(title, data, id, is_type) %}
+  <figure>
+    <figcaption>{{ title }}</figcaption>
+    <svg role="img" aria-labelledby="{{ id }}-t" viewBox="0 0 340 {{ 22*data|length + 6 }}" class="bars">
+      <title id="{{ id }}-t">{{ title }}: {% for k,v in data %}{{ k|typelabel if is_type else k }} {{ v }}{{ ', ' if not loop.last }}{% endfor %}</title>
+      {% set mx = (data|map(attribute=1)|max) %}
+      {% for k,v in data %}<g transform="translate(0,{{ loop.index0*22+3 }})">
+        <text x="0" y="13" class="lbl">{{ (k|typelabel if is_type else k)[:22] }}</text>
+        <rect x="140" y="1" height="14" width="{{ (v/mx*160)|round(0) }}" class="bar"/>
+        <text x="{{ 144 + (v/mx*160)|round(0) }}" y="13" class="val">{{ v }}</text></g>{% endfor %}
+    </svg>
+    <details><summary>Data table</summary><table>{% for k,v in data %}<tr><th scope="row">{{ k|typelabel if is_type else k }}</th><td>{{ v }}</td></tr>{% endfor %}</table></details>
+  </figure>
+  {% endmacro %}
+  {{ bars('Notices by kind', by_type, 'ct', True) }}
+  {{ bars('Most affected routes', by_route, 'cr', False) }}
+</section>
+</details>
+{% endif %}
+{% endblock %}

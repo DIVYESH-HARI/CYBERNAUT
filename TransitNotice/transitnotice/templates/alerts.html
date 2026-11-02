@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Alert delivery log{% endblock %}
+{% block body %}
+<h1>Alert delivery log</h1>
+<table><thead><tr><th>#</th><th>Subscriber</th><th>Notice</th><th>Rev</th><th>Status</th><th>Alerted at (UTC)</th><th>Detail</th></tr></thead><tbody>
+{% for r in rows %}<tr><td>{{ r.alert_id }}</td><td>{{ r.email }}</td><td>{{ r.summary[:70] }}</td><td>{{ r.revision_id }}</td><td>{{ r.alert_status }}</td><td>{{ r.alerted_at }}</td><td>{{ r.detail or '' }}</td></tr>
+{% else %}<tr><td colspan="7">No alerts yet.</td></tr>{% endfor %}</tbody></table>
+{% endblock %}

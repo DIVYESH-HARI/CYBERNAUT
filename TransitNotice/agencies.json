@@ -1,0 +1,47 @@
+{
+  "_help": [
+    "One entry per agency. Set enabled=false to switch an agency off.",
+    "adapter: cmrl | cmrl_press | sample_metro | mbta | rss  (rss works for any RSS 2.0 or Atom feed of notices)",
+    "operator_type: Government | Private",
+    "{demo_base_url} is replaced with this app's own address (used by the demo sources).",
+    "Before enabling a new real agency: check its robots.txt and terms and record them in docs/SOURCE_APPROVAL.md."
+  ],
+  "agencies": [
+    {
+      "key": "cmrl",
+      "adapter": "cmrl",
+      "operator_type": "Government",
+      "enabled": true
+    },
+    {
+      "key": "cmrl_press",
+      "adapter": "cmrl_press",
+      "operator_type": "Government",
+      "enabled": true
+    },
+    {
+      "key": "sample_metro",
+      "adapter": "sample_metro",
+      "operator_type": "Government",
+      "enabled": true
+    },
+    {
+      "key": "demo_private_bus",
+      "adapter": "rss",
+      "agency": "Sample Private Coaches (demo operator)",
+      "operator_type": "Private",
+      "url": "{demo_base_url}/demo-source/private_coaches.xml",
+      "timezone": "Asia/Kolkata",
+      "refresh_seconds": 300,
+      "area": "Tamil Nadu intercity (demo)",
+      "type_hint": "",
+      "enabled": true
+    },
+    {
+      "key": "mbta",
+      "adapter": "mbta",
+      "operator_type": "Government",
+      "enabled": false
+    }
+  ]
+}

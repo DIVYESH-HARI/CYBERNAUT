@@ -1,0 +1,131 @@
+[
+  {
+    "source_id": "nsp-india",
+    "name": "National Scholarship Portal (Government of India)",
+    "listing_url": "https://scholarships.gov.in/All-Scholarships",
+    "adapter": "blocks",
+    "default_timezone": "Asia/Kolkata",
+    "refresh_minutes": 360,
+    "enabled": true,
+    "approved_by": "PENDING mentor approval - robots.txt checked 2026-10-21 (no rules); copyright policy requires acknowledgement, see docs/SOURCE_APPROVAL.md",
+    "approved_at": null,
+    "config": {
+      "block": ".accordion-body > div.row",
+      "title": "h6",
+      "group_class": "accordion-item",
+      "group_title": ".accordion-button",
+      "badge": "span",
+      "link_text": "Specification",
+      "badge_labels": {
+        "student application open till": "due_text",
+        "student application open till (for renewal)": "due_text"
+      },
+      "defaults": {
+        "region": "Study in India",
+        "residency_rule": "Indian students - category, income and marks rules are in the scheme guidelines"
+      }
+    }
+  },
+  {
+    "source_id": "usief-fulbright-nehru",
+    "name": "USIEF - Fulbright-Nehru Fellowships for Indian Citizens",
+    "listing_url": "https://www.usief.org.in/fulbright-fellowships/fellowships-for-indian-citizen/",
+    "adapter": "detail_pages",
+    "default_timezone": "Asia/Kolkata",
+    "refresh_minutes": 360,
+    "enabled": true,
+    "approved_by": "PENDING mentor approval - robots.txt checked 2026-10-21 (allows /)",
+    "approved_at": null,
+    "config": {
+      "link_scope": "body",
+      "link_pattern": "usief\\.org\\.in/fulbright-fellowships/fellowships-for-indian-citizen/[a-z0-9-]+/$",
+      "exclude_pattern": "faqs|selection-process|fulbright-specialist|scholar-in-residence",
+      "deadline_rules": [
+        {"type": "table_label", "label": "application deadline"},
+        {"type": "sentence", "pattern": "application deadline (?:is|:)\\s*(?P<when>[^.]+)"}
+      ],
+      "defaults": {
+        "provider": "United States-India Educational Foundation (Fulbright)",
+        "region": "Study / research in the USA",
+        "residency_rule": "Indian citizens"
+      }
+    }
+  },
+  {
+    "source_id": "csc-uk",
+    "name": "Commonwealth Scholarship Commission in the UK",
+    "listing_url": "https://cscuk.fcdo.gov.uk/scholarships/",
+    "adapter": "detail_pages",
+    "default_timezone": "Europe/London",
+    "refresh_minutes": 360,
+    "enabled": true,
+    "approved_by": "PENDING mentor approval - robots.txt checked 2026-10-21 (allows all); site is all rights reserved, facts + link only",
+    "approved_at": null,
+    "config": {
+      "link_scope": "body",
+      "link_pattern": "cscuk\\.fcdo\\.gov\\.uk/scholarships/[a-z0-9-]+/$",
+      "exclude_pattern": "host-organisations",
+      "title_strip": "\\s*[\u2013\u2014-]\\s*information for candidates",
+      "deadline_rules": [
+        {"type": "sentence", "pattern": "closing date for applications is (?P<when>[^.]+)"}
+      ],
+      "defaults": {
+        "provider": "Commonwealth Scholarship Commission in the UK",
+        "region": "Study in the UK",
+        "residency_rule": "Citizens of eligible Commonwealth countries - check the country list on the page",
+        "funding_text": "Fully funded scholarship"
+      }
+    }
+  },
+  {
+    "source_id": "eu-erasmus-mundus",
+    "name": "European Commission (EACEA) - Erasmus Mundus Catalogue",
+    "listing_url": "https://www.eacea.ec.europa.eu/scholarships/erasmus-mundus-catalogue_en",
+    "adapter": "cards",
+    "default_timezone": "Europe/Brussels",
+    "refresh_minutes": 1440,
+    "enabled": true,
+    "approved_by": "PENDING mentor approval - robots.txt checked 2026-10-21; EU content reusable under CC BY 4.0 with attribution",
+    "approved_at": null,
+    "config": {
+      "card": "article.ecl-card",
+      "title": ".ecl-content-block__title",
+      "next_selector": "li.ecl-pagination__item--next a",
+      "max_pages": 20,
+      "fallback_to_listing": true,
+      "defaults": {
+        "provider": "Erasmus Mundus university consortium (EU-funded)",
+        "education_text": "Master's",
+        "region": "Study in Europe (two or more countries)",
+        "residency_rule": "Open to applicants from any country",
+        "funding_text": "Fully funded scholarship (where the programme offers it)",
+        "benefit_text": "Many programmes offer EU-funded Erasmus Mundus scholarships; availability varies - check the programme website",
+        "due_text": "Set by each programme - usually between October and January"
+      }
+    }
+  },
+  {
+    "source_id": "demo-portal-a",
+    "name": "Demo National Scholarship Portal (table layout)",
+    "listing_url": "{BASE_URL}/demo-source/portal-a",
+    "adapter": "table",
+    "default_timezone": "Asia/Kolkata",
+    "demo": true,
+    "enabled": true,
+    "approved_by": "Demo data - fictional, built into the app",
+    "approved_at": "2026-10-21",
+    "config": {}
+  },
+  {
+    "source_id": "demo-portal-b",
+    "name": "Demo International Fellowship Board (card layout)",
+    "listing_url": "{BASE_URL}/demo-source/portal-b",
+    "adapter": "cards",
+    "default_timezone": "UTC",
+    "demo": true,
+    "enabled": true,
+    "approved_by": "Demo data - fictional, built into the app",
+    "approved_at": "2026-10-21",
+    "config": {}
+  }
+]

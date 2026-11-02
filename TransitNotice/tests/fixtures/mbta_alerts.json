@@ -1,0 +1,9 @@
+{"data":[
+ {"id":"900","type":"alert","attributes":{"header":"Red Line: shuttle buses replace trains between Alewife and Harvard","effect":"SHUTTLE","lifecycle":"ONGOING","created_at":"2026-11-01T20:00:00-05:00",
+  "active_period":[{"start":"2026-11-02T06:00:00-05:00","end":"2026-11-03T04:00:00-05:00"},{"start":"2026-11-04T06:00:00-05:00","end":"2026-11-05T04:00:00-05:00"}],
+  "informed_entity":[{"route":"Red","route_type":1,"stop":"place-alfcl"},{"route":"Mattapan","route_type":0,"stop":"place-asmnl"}]}},
+ {"id":"901","type":"alert","attributes":{"header":"Elevator out of service at Park Street","effect":"ELEVATOR_CLOSURE","lifecycle":"NEW","created_at":"2026-11-01T10:00:00-05:00",
+  "active_period":[{"start":"2026-11-01T10:00:00-05:00","end":null}],"informed_entity":[{"route":"Green-B","route_type":0,"stop":"place-pktrm"}]}},
+ {"id":"902","type":"alert","attributes":{"header":"","effect":"DELAY","informed_entity":[],"active_period":[]}},
+ {"id":"900","type":"alert","attributes":{"header":"duplicate id","effect":"DELAY","informed_entity":[],"active_period":[]}}
+]}
